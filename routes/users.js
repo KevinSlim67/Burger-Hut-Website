@@ -18,10 +18,12 @@ router.post('/auth', async (req, res) => {
     if (email && password) {
         const sql = `SELECT * FROM User WHERE email = ? AND password = ?`;
         db.query(sql, [email, password], (error, results, fields) => {
-            if (error) return console.error(error.message);
+            if (error) console.log(error.code);
 
             if (results.length > 0) {
-                res.send({ id: results[0].id });
+                res.send({ id: results[0].id, status: 'FOUND' });
+            } else {
+                res.send({ status: 'NOT FOUND' });
             }
         });
     }
@@ -34,8 +36,13 @@ router.post('/register', async (req, res) => {
         const sql = `INSERT INTO User (first_name, last_name, email, password, gender, phone_number, country_code, date_of_birth)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
         db.query(sql, [firstName, lastName, email, password, gender, phone, countryCode, dob], (error, results, fields) => {
-            if (error) return console.error(error.message);
-            res.send({ status: 'success'});
+
+            if (error) {
+                if (error.code === 'ER_DUP_ENTRY') res.send({ status: 'DUPLICATE' });
+                else console.error(error.message);
+            } else {
+                res.send({ status: 'SUCCESS' });
+            }
         });
     }
 });
