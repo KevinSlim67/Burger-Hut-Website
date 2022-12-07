@@ -21,7 +21,7 @@ router.post('/auth', async (req, res) => {
             if (error) console.log(error.code);
 
             if (results.length > 0) {
-                res.send({ id: results[0].id, status: 'FOUND' });
+                res.send({ id: results[0].id, firstName: results[0].first_name, status: 'FOUND' });
             } else {
                 res.send({ status: 'NOT FOUND' });
             }

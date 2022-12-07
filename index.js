@@ -26,7 +26,12 @@ app.get('/', async (req, res) => {
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 
+//creating the route to the subscriber model
+const foodsRouter = require('./routes/foods');
+app.use('/foods', foodsRouter);
+
 //start the sever
 app.listen(process.env.PORT || 5000, () => console.log("Server Started"));
 
 module.exports = { db };
+
