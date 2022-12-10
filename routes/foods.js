@@ -19,22 +19,34 @@ router.post('/category', async (req, res) => {
     const sql = `SELECT * FROM Food WHERE category = ?`;
     db.query(sql, [category], (error, results, fields) => {
         if (error) return console.error(error.message);
-        results.map(r => {
+        results.forEach(r => {
+            //send image if it exists, send placeholder image if not
             const imagePath = r.image;
- 
-                try {
-                    if (imagePath !== null || fs.existsSync(imagePath)) {
-                        r.image = fs.readFileSync(imagePath, 'base64');
-                    } else {
-                        r.image = fs.readFileSync('assets/food/placeholder.png', 'base64');
-                    }
-                  } catch(err) {
-                    console.error(err)
-                  }
-            
+            try {
+                if (imagePath !== null || fs.existsSync(imagePath)) {
+                    r.image = fs.readFileSync(imagePath, 'base64');
+                } else {
+                    r.image = fs.readFileSync('assets/food/placeholder.png', 'base64');
+                }
+            } catch (err) {
+                console.error(err)
+            }
         })
-
         res.json(results);
+    });
+});
+
+//Returns food ingredients
+router.post('/ingredients', async (req, res) => {
+    const id = req.body.id;
+    const sql = `SELECT ingredient FROM Food_Ingredient WHERE food_id = ?`;
+    const items = [];
+    db.query(sql, [id], (error, results, fields) => {
+        if (error) return console.error(error.message);
+        for (let i = 0; i < results.length; i++) {
+            items.push(results[i].ingredient);
+        }
+        res.json(items);
     });
 });
 
