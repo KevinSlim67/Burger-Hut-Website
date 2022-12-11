@@ -50,19 +50,64 @@ router.post('/ingredients', async (req, res) => {
     });
 });
 
-//Add item to cart
-router.post('/add-to-cart', async (req, res) => {
-    const { userId, foodId } = req.body;
 
-    const sql = `INSERT INTO Cart (user_id, food_id) VALUES (?, ?)`;
-    db.query(sql, [userId, foodId], (error, results, fields) => {
+//Add item to cart if it doesn't exist, if it does, update the amount instead
+router.post('/add-to-cart', async (req, res) => {
+    const { userId, foodId, amount } = req.body;
+    const sql = `INSERT INTO Cart (user_id, food_id, amount) VALUES (?, ?, ?)
+    ON DUPLICATE KEY UPDATE amount = amount + ?;`;
+
+    db.query(sql, [userId, foodId, amount, amount], (error, results, fields) => {
         if (error) {
-            console.log(error.code);
+            console.log(error);
             res.send({ status: 'ERROR' });
-        };
-        res.send({ status: 'SUCCESS' });
+        } else {
+            res.json(results);
+        }
     });
 });
 
+
+//Remove one item from cart
+router.post('/cart-remove-one', async (req, res) => {
+    const { userId, foodId } = req.body;
+    const sql = `UPDATE Cart SET amount = amount - 1 WHERE user_id = ? AND food_id = ?;`;
+    
+    db.query(sql, [userId, foodId], (error, results, fields) => {
+        if (error) {
+            if (error.code === 'ER_DATA_OUT_OF_RANGE') {
+                deleteItemAt0();
+            } else {
+                console.log(error);
+                res.send({ status: 'ERROR' });
+            }
+        } else {
+            deleteItemAt0();
+            res.send({ status: 'SUCCESS' });
+        }
+    });
+});
+
+//Remove one item from cart
+router.post('/cart-remove-all', async (req, res) => {
+    const { userId, foodId } = req.body;
+    const sql = `DELETE FROM Cart WHERE user_id = ? AND food_id = ?;`;
+    db.query(sql, [userId, foodId], (error, results, fields) => {
+        if (error) {
+            console.log(error);
+            res.send({ status: 'ERROR' });
+        } else {
+            res.send({ status: 'SUCCESS' });
+        }
+    });
+});
+
+function deleteItemAt0() {
+    //If the the amount of an item reaches 0, delete it from cart
+    const sql2 = `DELETE FROM Cart WHERE amount = 0;`
+    db.query(sql2, [], (error, results, fields) => {
+        if (error) console.log(error);;
+    });
+}
 
 module.exports = router;
