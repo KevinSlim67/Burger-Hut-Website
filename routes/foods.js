@@ -31,7 +31,7 @@ router.post('/category', async (req, res) => {
             } catch (err) {
                 console.error(err)
             }
-        })
+        });
         res.json(results);
     });
 });
@@ -49,5 +49,20 @@ router.post('/ingredients', async (req, res) => {
         res.json(items);
     });
 });
+
+//Add item to cart
+router.post('/add-to-cart', async (req, res) => {
+    const { userId, foodId } = req.body;
+
+    const sql = `INSERT INTO Cart (user_id, food_id) VALUES (?, ?)`;
+    db.query(sql, [userId, foodId], (error, results, fields) => {
+        if (error) {
+            console.log(error.code);
+            res.send({ status: 'ERROR' });
+        };
+        res.send({ status: 'SUCCESS' });
+    });
+});
+
 
 module.exports = router;
