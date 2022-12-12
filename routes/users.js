@@ -48,28 +48,4 @@ router.post('/register', async (req, res) => {
     }
 });
 
-//Get user's cart food items
-router.post('/cart', async (req, res) => {
-    const { userId } = req.body;
-
-    const sql = `SELECT * FROM CART c JOIN Food f ON c.food_id = f.id WHERE user_id = ?`;
-    db.query(sql, [userId], (error, results, fields) => {
-        if (error) console.log(error.code);
-        results.forEach(r => {
-            //send image if it exists, send placeholder image if not
-            const imagePath = r.image;
-            try {
-                if (imagePath !== null || fs.existsSync(imagePath)) {
-                    r.image = fs.readFileSync(imagePath, 'base64');
-                } else {
-                    r.image = fs.readFileSync('assets/food/placeholder.png', 'base64');
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        })
-        res.send(results);
-    });
-});
-
 module.exports = router;
