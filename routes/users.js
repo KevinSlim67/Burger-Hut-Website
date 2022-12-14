@@ -48,4 +48,32 @@ router.post('/register', async (req, res) => {
     }
 });
 
+//add address to user's account
+router.post('/add-address', async (req, res) => {
+    let { name, userId, district, city, streetName, buildingName, floorNumber, roomNumber, landmark, companyName, additionalInfo } = req.body;
+    if (companyName === '') companyName = null;
+    if (landmark === '') landmark = null;
+    if (additionalInfo === '') additionalInfo = null;
+    const sql = `INSERT INTO Address (name, user_id, district, city, street_name, building_name, floor_number, room_number, landmark, company_name, additional_information)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    db.query(sql, [name, userId, district, city, streetName, buildingName, floorNumber, roomNumber, landmark, companyName, additionalInfo], (error, results, fields) => {
+        if (error) {
+            if (error.code === 'ER_DUP_ENTRY') res.send({ status: 'DUPLICATE' });
+            else console.error(error.message);
+        } else {
+            res.send({ status: 'SUCCESS' });
+        }
+    });
+});
+
+//Returns all user's addresses
+router.post('/get-addresses', async (req, res) => {
+    const { userId } = req.body;
+    const sql = `SELECT * FROM Address WHERE user_id = ?`;
+    db.query(sql, [userId], (error, results, fields) => {
+        if (error) return console.error(error.message);
+        res.json(results);
+    });
+});
+
 module.exports = router;
