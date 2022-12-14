@@ -76,4 +76,16 @@ router.post('/get-addresses', async (req, res) => {
     });
 });
 
+router.delete('/delete-address', async (req, res) => {
+    const { userId, name } = req.body;
+    const sql = `DELETE FROM Address WHERE (user_id = ? AND name = ?)`;
+    db.query(sql, [userId, name + ''], (error, results, fields) => {
+        if (error){
+            res.json({status: 'ERROR'});
+            return console.error(error.message);
+        } else res.json({status: 'SUCCESS'});
+    });
+});
+
+
 module.exports = router;
