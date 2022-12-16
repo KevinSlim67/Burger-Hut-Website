@@ -30,6 +30,10 @@ app.use('/users', usersRouter);
 const foodsRouter = require('./routes/foods');
 app.use('/foods', foodsRouter);
 
+//creating the route to the subscriber model
+const ordersRouter = require('./routes/orders');
+app.use('/orders', ordersRouter);
+
 //start the sever
 app.listen(process.env.PORT || 5000, () => console.log("Server Started"));
 
