@@ -87,15 +87,6 @@ router.delete('/delete-address', async (req, res) => {
     });
 });
 
-//Returns all user's addresses
-router.get('/get-address-by-name', async (req, res) => {
-    const { userId, name } = req.body;
-    const sql = `SELECT * FROM Address WHERE user_id = ? AND name = ?`;
-    db.query(sql, [userId, name], (error, results, fields) => {
-        if (error) return console.error(error.message);
-        res.json(results[0]);
-    });
-});
 
 
 module.exports = router;

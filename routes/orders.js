@@ -32,6 +32,36 @@ router.post('/add-food', async (req, res) => {
     });
 });
 
+//Get user's last 10 orders
+router.get('/:userId', async (req, res) => {
+    const userId = req.params.userId;
+
+    const sql = `SELECT * FROM \`Order\` WHERE user_id = ? ORDER BY ordered_date DESC LIMIT 10;`;
+    db.query(sql, [userId], (error, results, fields) => {
+        if (error) {
+            res.json({ status: 'ERROR' });
+            console.error(error.message);
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+//Get an order's food items
+router.get('/food/:id', async (req, res) => {
+    const id = req.params.id;
+
+    const sql = `SELECT name, amount FROM Order_Food JOIN Food ON food_id = Food.id WHERE order_id = ?;`;
+    db.query(sql, [id], (error, results, fields) => {
+        if (error) {
+            res.json({ status: 'ERROR' });
+            console.error(error.message);
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 
 
 module.exports = router;
