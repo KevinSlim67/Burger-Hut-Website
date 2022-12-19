@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../db');
 const fs = require('fs');
 
-//Returns all foods
+//Get all foods
 router.get('/', async (req, res) => {
     const sql = `SELECT * FROM Food`;
     db.query(sql, (error, results, fields) => {
@@ -13,11 +13,34 @@ router.get('/', async (req, res) => {
     });
 });
 
-//Returns food with specific category
+//Get food with specific category
 router.get('/:category', async (req, res) => {
     const category = req.params.category;
     const sql = `SELECT * FROM Food WHERE category = ?`;
     db.query(sql, [category], (error, results, fields) => {
+        if (error) return console.error(error.message);
+        results.forEach(r => {
+            //send image if it exists, send placeholder image if not
+            const imagePath = r.image;
+            try {
+                if (imagePath !== null || fs.existsSync(imagePath)) {
+                    r.image = fs.readFileSync(imagePath, 'base64');
+                } else {
+                    r.image = fs.readFileSync('assets/food/placeholder.png', 'base64');
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        });
+        res.json(results);
+    });
+});
+
+//Get food based on letters that it contains
+router.get('/search/:input', async (req, res) => {
+    const input = req.params.input;
+    const sql = `SELECT * FROM Food WHERE name LIKE ?`;
+    db.query(sql, [`%${input}%`], (error, results, fields) => {
         if (error) return console.error(error.message);
         results.forEach(r => {
             //send image if it exists, send placeholder image if not
