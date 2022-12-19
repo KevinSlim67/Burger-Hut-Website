@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('./../db');
 const fs = require('fs');
 
-//Returns all users
+//Get all users
 router.get('/', async (req, res) => {
     const sql = `SELECT * FROM User`;
     db.query(sql, (error, results, fields) => {
@@ -66,9 +66,9 @@ router.post('/add-address', async (req, res) => {
     });
 });
 
-//Returns all user's addresses
-router.post('/get-addresses', async (req, res) => {
-    const { userId } = req.body;
+//Gets all user's addresses
+router.get('/addresses/:userId', async (req, res) => {
+    const { userId } = req.params;
     const sql = `SELECT * FROM Address WHERE user_id = ?`;
     db.query(sql, [userId], (error, results, fields) => {
         if (error) return console.error(error.message);

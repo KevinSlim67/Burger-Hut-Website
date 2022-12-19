@@ -14,8 +14,8 @@ router.get('/', async (req, res) => {
 });
 
 //Returns food with specific category
-router.post('/category', async (req, res) => {
-    const category = req.body.category;
+router.get('/:category', async (req, res) => {
+    const category = req.params.category;
     const sql = `SELECT * FROM Food WHERE category = ?`;
     db.query(sql, [category], (error, results, fields) => {
         if (error) return console.error(error.message);
@@ -36,9 +36,9 @@ router.post('/category', async (req, res) => {
     });
 });
 
-//Returns food using its id
-router.post('/id', async (req, res) => {
-    const id = req.body.id;
+//Get food using its id
+router.get('/id/:id', async (req, res) => {
+    const id = req.params.id;
     const sql = `SELECT * FROM Food WHERE id = ?`;
     db.query(sql, [id], (error, results, fields) => {
         if (error) return console.error(error.message);
@@ -61,9 +61,9 @@ router.post('/id', async (req, res) => {
     });
 });
 
-//Returns food ingredients
-router.post('/ingredients', async (req, res) => {
-    const id = req.body.id;
+//Get food ingredients
+router.get('/:id/ingredients', async (req, res) => {
+    const id = req.params.id;
     const sql = `SELECT ingredient FROM Food_Ingredient WHERE food_id = ?`;
     const items = [];
     db.query(sql, [id], (error, results, fields) => {
