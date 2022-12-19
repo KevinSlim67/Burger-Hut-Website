@@ -76,10 +76,11 @@ router.get('/addresses/:userId', async (req, res) => {
     });
 });
 
-router.delete('/delete-address', async (req, res) => {
-    const { userId, name } = req.body;
-    const sql = `DELETE FROM Address WHERE (user_id = ? AND name = ?)`;
-    db.query(sql, [userId, name + ''], (error, results, fields) => {
+//Delete a user's address;
+router.delete('/address/delete', async (req, res) => {
+    const { id } = req.body;
+    const sql = `DELETE FROM Address WHERE id = ?`;
+    db.query(sql, [id], (error, results, fields) => {
         if (error){
             res.json({status: 'ERROR'});
             return console.error(error.message);
