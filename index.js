@@ -22,17 +22,17 @@ app.get('/', async (req, res) => {
     }
 });
 
-//creating the route to the subscriber model
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 
-//creating the route to the subscriber model
 const foodsRouter = require('./routes/foods');
 app.use('/foods', foodsRouter);
 
-//creating the route to the subscriber model
 const ordersRouter = require('./routes/orders');
 app.use('/orders', ordersRouter);
+
+const contactRouter = require('./routes/contact');
+app.use('/contact', contactRouter);
 
 //start the sever
 app.listen(process.env.PORT || 5000, () => console.log("Server Started"));

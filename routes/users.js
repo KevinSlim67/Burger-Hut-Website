@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./../db');
-const fs = require('fs');
 
 //Get all users
 router.get('/', async (req, res) => {
@@ -71,7 +70,9 @@ router.get('/addresses/:userId', async (req, res) => {
     const { userId } = req.params;
     const sql = `SELECT * FROM Address WHERE user_id = ?`;
     db.query(sql, [userId], (error, results, fields) => {
-        if (error) return console.error(error.message);
+        if (error) {
+            console.log(res.json({status: 'ERROR', message: error.message}));
+        }
         res.json(results);
     });
 });

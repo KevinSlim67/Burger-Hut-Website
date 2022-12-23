@@ -1,15 +1,32 @@
 const express = require('express');
+const request = require('request');
 const router = express.Router();
 const db = require('./../db');
 
 //Adds an order submitted by one user
 router.post('/add', async (req, res) => {
-    const { id, userId, branchId, addressId, phoneNumber, totalPrice, estimatedTime, orderedDate } = req.body;
+    const { id, userId, branchId, addressId, phoneNumber, totalPrice, estimatedTime, orderedDate, captcha } = req.body;
+    if (captcha === null || captcha === undefined || captcha === '') {
+        res.json({ status: 'FAILED', message: "Please validate captcha" });
+        return;
+    }
+
+    //verify captcha
+    const secret = '6LcxBqEjAAAAAL80aYoSyNWPqrej7g6Jj_QXMPmH';
+    const remoteIP = req.socket.remoteAddress;
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${secret}&response=${captcha}&remoteip=${remoteIP}`;
+    request(verifyURL, (err, response, body) => {
+        body = JSON.parse(body);
+        if (body.success !== undefined && !body.success) {
+            res.json({ status: 'FAILED', message: "Failed captcha verification" });
+            return;
+        }
+    });
+
     const sql = `INSERT INTO \`Order\` (id, user_id, branch_id, address_id, phone_number, total_price, estimated_time, status, ordered_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    db.query(sql, [id, userId, branchId, addressId, phoneNumber, totalPrice, estimatedTime, 'In Process', orderedDate], (error, results, fields) => {
+    db.query(sql, [id, userId, branchId, addressId, phoneNumber, totalPrice, estimatedTime, 'In Progress', orderedDate], (error, results, fields) => {
         if (error) {
-            res.json({ status: 'ERROR' });
-            console.error(error.message);
+            res.json({ status: 'ERROR', message: error.message });
         } else {
             res.json({ status: 'SUCCESS', orderId: results[0] });
         }
