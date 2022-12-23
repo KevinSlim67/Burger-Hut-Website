@@ -13,7 +13,6 @@ router.post('/add', async (req, res) => {
     }
 
     //verify captcha
-    const secret = '6LcxBqEjAAAAAL80aYoSyNWPqrej7g6Jj_QXMPmH';
     const remoteIP = req.socket.remoteAddress;
     const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_CAPTCHA}&response=${captcha}&remoteip=${remoteIP}`;
     request(verifyURL, (err, response, body) => {
