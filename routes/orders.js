@@ -2,6 +2,7 @@ const express = require('express');
 const request = require('request');
 const router = express.Router();
 const db = require('./../db');
+require('dotenv').config();
 
 //Adds an order submitted by one user
 router.post('/add', async (req, res) => {
@@ -14,7 +15,7 @@ router.post('/add', async (req, res) => {
     //verify captcha
     const secret = '6LcxBqEjAAAAAL80aYoSyNWPqrej7g6Jj_QXMPmH';
     const remoteIP = req.socket.remoteAddress;
-    const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${secret}&response=${captcha}&remoteip=${remoteIP}`;
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_CAPTCHA}&response=${captcha}&remoteip=${remoteIP}`;
     request(verifyURL, (err, response, body) => {
         body = JSON.parse(body);
         if (body.success !== undefined && !body.success) {
