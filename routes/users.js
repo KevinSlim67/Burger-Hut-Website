@@ -63,7 +63,7 @@ router.patch('/edit', async (req, res) => {
 
     const arr = [];
     for (u in user) {
-        if (u === 'id') continue;
+        if (u === 'id') continue
         if (user[u] === '') user[u] = null;
         if (user[u] !== null) arr.push(`${u} = '${user[u]}'`);
     }

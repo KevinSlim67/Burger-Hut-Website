@@ -34,6 +34,9 @@ app.use('/orders', ordersRouter);
 const contactRouter = require('./routes/contact');
 app.use('/contact', contactRouter);
 
+const userFavorites = require('./routes/user_favorites');
+app.use('/users-favorites', userFavorites);
+
 //start the sever
 app.listen(process.env.PORT || 5000, () => console.log("Server Started"));
 
