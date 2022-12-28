@@ -25,6 +25,9 @@ app.get('/', async (req, res) => {
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 
+const addressesRouter = require('./routes/addresses');
+app.use('/addresses', addressesRouter);
+
 const foodsRouter = require('./routes/foods');
 app.use('/foods', foodsRouter);
 

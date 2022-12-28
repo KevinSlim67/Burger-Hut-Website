@@ -57,7 +57,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-//edit user's info
+//Edit user's info
 router.patch('/edit', async (req, res) => {
     let { user } = req.body;
 
@@ -79,50 +79,5 @@ router.patch('/edit', async (req, res) => {
         }
     });
 });
-
-
-//add address to user's account
-router.post('/add-address', async (req, res) => {
-    let { name, userId, district, city, streetName, buildingName, floorNumber, roomNumber, landmark, companyName, additionalInfo } = req.body;
-    if (companyName === '') companyName = null;
-    if (landmark === '') landmark = null;
-    if (additionalInfo === '') additionalInfo = null;
-    const sql = `INSERT INTO Address (name, user_id, district, city, street_name, building_name, floor_number, room_number, landmark, company_name, additional_information)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    db.query(sql, [name, userId, district, city, streetName, buildingName, floorNumber, roomNumber, landmark, companyName, additionalInfo], (error, results, fields) => {
-        if (error) {
-            if (error.code === 'ER_DUP_ENTRY') res.send({ status: 'DUPLICATE' });
-            else console.error(error.message);
-        } else {
-            res.send({ status: 'SUCCESS' });
-        }
-    });
-});
-
-//Gets all user's addresses
-router.get('/addresses/:userId', async (req, res) => {
-    const { userId } = req.params;
-    const sql = `SELECT * FROM Address WHERE user_id = ?`;
-    db.query(sql, [userId], (error, results, fields) => {
-        if (error) {
-            console.log(res.json({ status: 'ERROR', message: error.message }));
-        }
-        res.json(results);
-    });
-});
-
-//Delete a user's address;
-router.delete('/address/delete', async (req, res) => {
-    const { id } = req.body;
-    const sql = `DELETE FROM Address WHERE id = ?`;
-    db.query(sql, [id], (error, results, fields) => {
-        if (error) {
-            res.json({ status: 'ERROR' });
-            return console.error(error.message);
-        } else res.json({ status: 'SUCCESS' });
-    });
-});
-
-
 
 module.exports = router;
