@@ -6,7 +6,8 @@ require('dotenv').config();
 
 //Adds an order submitted by one user
 router.post('/add', async (req, res) => {
-    const { id, userId, branchId, addressId, phoneNumber, totalPrice, estimatedTime, orderedDate, captcha } = req.body;
+    const { id, userId, branchId, addressId, phoneNumber, specialInstructions, totalPrice, estimatedTime, orderedDate, captcha } = req.body;
+    
     if (captcha === null || captcha === undefined || captcha === '') {
         res.json({ status: 'FAILED', message: "Please validate captcha" });
         return;
@@ -23,8 +24,8 @@ router.post('/add', async (req, res) => {
         }
     });
 
-    const sql = `INSERT INTO \`Order\` (id, user_id, branch_id, address_id, phone_number, total_price, estimated_time, status, ordered_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    db.query(sql, [id, userId, branchId, addressId, phoneNumber, totalPrice, estimatedTime, 'In Progress', orderedDate], (error, results, fields) => {
+    const sql = `INSERT INTO \`Order\` (id, user_id, branch_id, address_id, phone_number, total_price, estimated_time, status, ordered_date, special_instructions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    db.query(sql, [id, userId, branchId, addressId, phoneNumber, totalPrice, estimatedTime, 'In Progress', orderedDate, specialInstructions], (error, results, fields) => {
         if (error) {
             res.json({ status: 'ERROR', message: error.message });
         } else {
@@ -78,7 +79,5 @@ router.get('/food/:id', async (req, res) => {
         }
     });
 });
-
-
 
 module.exports = router;
