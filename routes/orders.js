@@ -80,4 +80,39 @@ router.get('/food/:id', async (req, res) => {
     });
 });
 
+//Get an all orders of a specific branch who's status are 'In Progress'
+router.get('/:branchId/toDeliver', async (req, res) => {
+    const branchId = req.params.branchId;
+
+    const sql = `SELECT \`Order\`.id, ordered_date, \`Order\`.phone_number, total_price, first_name, last_name,
+     Address.district, Address.city, street_name, building_name, floor_number, room_number, landmark, company_name, additional_information FROM \`Order\`
+     JOIN Branch ON branch_id = Branch.id
+     JOIN User ON user_id = User.id
+     JOIN Address ON Address.id = address_id
+     WHERE branch_id = ? AND status = 'In Progress'`;
+    db.query(sql, [branchId], (error, results, fields) => {
+        if (error) {
+            res.json({ status: 'ERROR' });
+            console.error(error.message);
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+//Change Order Status
+router.patch('/status', async (req, res) => {
+    const {orderId, status, driverId} = req.body;
+
+    const sql = `UPDATE \`Order\` SET status = ?, driver_id = ? WHERE id = ?`;
+    db.query(sql, [status, driverId, orderId], (error, results, fields) => {
+        if (error) {
+            res.json({ status: 'ERROR' });
+            console.error(error.message);
+        } else {
+            res.json({ status: 'SUCCESS' });
+        }
+    });
+});
+
 module.exports = router;

@@ -25,6 +25,9 @@ app.get('/', async (req, res) => {
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 
+const driversRouter = require('./routes/drivers');
+app.use('/drivers', driversRouter);
+
 const addressesRouter = require('./routes/addresses');
 app.use('/addresses', addressesRouter);
 
