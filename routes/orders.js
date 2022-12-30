@@ -7,7 +7,7 @@ require('dotenv').config();
 //Adds an order submitted by one user
 router.post('/add', async (req, res) => {
     const { id, userId, branchId, addressId, phoneNumber, specialInstructions, totalPrice, estimatedTime, orderedDate, captcha } = req.body;
-    
+
     if (captcha === null || captcha === undefined || captcha === '') {
         res.json({ status: 'FAILED', message: "Please validate captcha" });
         return;
@@ -54,7 +54,7 @@ router.post('/add-food', async (req, res) => {
 router.get('/:userId', async (req, res) => {
     const userId = req.params.userId;
 
-    const sql = `SELECT * FROM \`Order\` WHERE user_id = ? ORDER BY ordered_date DESC LIMIT 10;`;
+    const sql = `SELECT \`Order\`.*, first_name, last_name FROM \`Order\` LEFT JOIN Driver ON driver_id = Driver.id WHERE user_id = ? ORDER BY ordered_date DESC LIMIT 10;`;
     db.query(sql, [userId], (error, results, fields) => {
         if (error) {
             res.json({ status: 'ERROR' });
@@ -85,7 +85,8 @@ router.get('/:branchId/toDeliver', async (req, res) => {
     const branchId = req.params.branchId;
 
     const sql = `SELECT \`Order\`.id, ordered_date, \`Order\`.phone_number, total_price, first_name, last_name,
-     Address.district, Address.city, street_name, building_name, floor_number, room_number, landmark, company_name, additional_information FROM \`Order\`
+     Address.district, Address.city, Branch.city AS branch, street_name, building_name, floor_number, room_number,
+     landmark, company_name, Address.additional_information FROM \`Order\`
      JOIN Branch ON branch_id = Branch.id
      JOIN User ON user_id = User.id
      JOIN Address ON Address.id = address_id
@@ -100,12 +101,32 @@ router.get('/:branchId/toDeliver', async (req, res) => {
     });
 });
 
+//Get an all orders of a specific branch who's status are 'In Transit'
+router.get('/:branchId/InTransit', async (req, res) => {
+    const driverId = req.params.branchId;
+
+    const sql = `SELECT \`Order\`.id, ordered_date, \`Order\`.phone_number, total_price, first_name, last_name,
+     Address.district, Address.city, Branch.city AS branch, street_name, building_name, floor_number, room_number,
+     landmark, company_name, Address.additional_information FROM \`Order\`
+     JOIN Branch ON branch_id = Branch.id
+     JOIN User ON user_id = User.id
+     JOIN Address ON Address.id = address_id
+     WHERE driver_id = ? AND status = 'In Transit'`;
+    db.query(sql, [driverId], (error, results, fields) => {
+        if (error) {
+            res.json({ status: 'ERROR' });
+            console.error(error.message);
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 //Change Order Status
 router.patch('/status', async (req, res) => {
-    const {orderId, status, driverId} = req.body;
-
-    const sql = `UPDATE \`Order\` SET status = ?, driver_id = ? WHERE id = ?`;
-    db.query(sql, [status, driverId, orderId], (error, results, fields) => {
+    const { orderId, status, driverId, deliveredDate } = req.body;
+    let sql = `UPDATE \`Order\` SET status = ?, driver_id = ?, delivered_date = ? WHERE id = ?`;
+    db.query(sql, [status, driverId, deliveredDate, orderId], (error, results, fields) => {
         if (error) {
             res.json({ status: 'ERROR' });
             console.error(error.message);
