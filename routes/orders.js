@@ -2,6 +2,7 @@ const express = require('express');
 const request = require('request');
 const router = express.Router();
 const db = require('./../db');
+const { companyToClientMail } = require('./email');
 require('dotenv').config();
 
 //Adds an order submitted by one user
@@ -29,7 +30,7 @@ router.post('/add', async (req, res) => {
         if (error) {
             res.json({ status: 'ERROR', message: error.message });
         } else {
-            res.json({ status: 'SUCCESS', orderId: results[0] });
+            res.json({ status: 'SUCCESS' });
         }
     });
 });
@@ -45,7 +46,18 @@ router.post('/add-food', async (req, res) => {
             res.json({ status: 'ERROR' });
             console.error(error.message);
         } else {
-            res.json({ status: 'SUCCESS' });
+            const sql = `SELECT * FROM \`Order\` WHERE id = ?;`;
+            db.query(sql, [orderId], (error, results, fields) => {
+                if (error) {
+                    console.error(error.message);
+                } else {
+                    const order = results[0];
+                    let emailTemp = '';
+                    emailTemp = emailTemplate(order, 'Thank you for placing an order with Burger Hut. Your order is being prepared and will be ready for pickup soon.');
+                    companyToClientMail({ subject: `Order Confirmation - ${orderId}`, html: emailTemp });
+                    res.json({ status: 'SUCCESS' });
+                }
+            });
         }
     });
 });
@@ -80,7 +92,7 @@ router.get('/food/:id', async (req, res) => {
     });
 });
 
-//Get an all orders of a specific branch who's status are 'In Progress'
+//Get all orders of a specific branch who's status are 'In Progress'
 router.get('/:branchId/toDeliver', async (req, res) => {
     const branchId = req.params.branchId;
 
@@ -131,9 +143,58 @@ router.patch('/status', async (req, res) => {
             res.json({ status: 'ERROR' });
             console.error(error.message);
         } else {
-            res.json({ status: 'SUCCESS' });
+            const sql = `SELECT * FROM \`Order\` WHERE id = ?;`;
+            db.query(sql, [orderId], (error, results, fields) => {
+                if (error) {
+                    console.error(error.message);
+                } else {
+                    const order = results[0];
+                    let emailTemp = '';
+                    switch (status) {
+                        case 'Delivered':
+                            emailTemp = emailTemplate(order, 'Your order has been set as delivered. If you think this is a mistake, please contact us.');
+                            companyToClientMail({ subject: `Order Successfully Delivered - ${order.id}`, html: emailTemp });
+                            break;
+                        case 'In Transit':
+                            emailTemp = emailTemplate(order, 'Thank you for placing an order with Burger Hut. Your order is now done, and is currently on its way to be delivered to you.');
+                            companyToClientMail({ subject: `Order In Transit - ${order.id}`, html: emailTemp });
+                            break;
+                        case 'Cancelled':
+                            emailTemp = emailTemplate(order, 'Thank you for placing an order with Burger Hut. It seems your driver decided to cancel your order. We sincerely apologize for the trouble, if you wish to order again, either call us or order on the side once more.');
+                            companyToClientMail({ subject: `Order Cancelled - ${order.id}`, html: emailTemp });
+                            break;
+                    }
+                }
+            });
+
         }
+        res.json({ status: 'SUCCESS' });
     });
 });
+
+function emailTemplate(order, description) {
+    const list = [];
+    for (const key in order) {
+        if (!key.includes('_id') && order[key] !== null) {
+            //format the element accordingly
+            let capitalKey = key.charAt(0).toUpperCase() + key.slice(1);
+            capitalKey = capitalKey.replace('_', ' ');
+            if (capitalKey === 'Id') capitalKey = 'Order Id';
+            if (key === 'total_price') order[key] = order[key] + '$';
+            list.push(`<li><strong>${capitalKey}:</strong> ${order[key]}</li>`);
+        }
+    }
+
+    return `
+    <p>Dear Customer,</p>
+    <p>${description}</p>
+    <h3>Order Details:</h3>
+    <ul>
+       ${list.join('')}
+    </ul>
+    <p>Thank you for choosing Burger Hut.</p>
+    <p>Best regards,</p>
+    <p>The Burger Hut Team</p>`;
+}
 
 module.exports = router;

@@ -3,6 +3,8 @@ const cors = require('cors');
 require('dotenv').config();
 const app = express();
 const db = require('./db');
+const { generateRoutes } = require('./routes');
+const { companyToClientMail } = require('./routes/email');
 
 db.connect(function (err) {
     if (err) throw err;
@@ -22,26 +24,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-const usersRouter = require('./routes/users');
-app.use('/users', usersRouter);
-
-const driversRouter = require('./routes/drivers');
-app.use('/drivers', driversRouter);
-
-const addressesRouter = require('./routes/addresses');
-app.use('/addresses', addressesRouter);
-
-const foodsRouter = require('./routes/foods');
-app.use('/foods', foodsRouter);
-
-const ordersRouter = require('./routes/orders');
-app.use('/orders', ordersRouter);
-
-const contactRouter = require('./routes/contact');
-app.use('/contact', contactRouter);
-
-const userFavorites = require('./routes/user_favorites');
-app.use('/users-favorites', userFavorites);
+generateRoutes(app); //generate DB-related routes
 
 //start the sever
 app.listen(process.env.PORT || 5000, () => console.log("Server Started"));
