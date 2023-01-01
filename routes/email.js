@@ -19,7 +19,7 @@ async function companyToClientMail(email) {
         secure: true, 
         auth: {
             user: 'burgerhut1212@gmail.com',
-            pass: 'lqpnczypeftenrwj'
+            pass: process.env.BURGER_COMPANY
         }
     });
 
