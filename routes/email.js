@@ -9,7 +9,7 @@ async function companyToClientMail(email, clientEmail) {
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
-        secure: true, 
+        secure: true,
         auth: {
             user: 'burgerhut1212@gmail.com',
             pass: process.env.BURGER_COMPANY
@@ -23,8 +23,35 @@ async function companyToClientMail(email, clientEmail) {
         subject: subject,
         html: html
     });
-
-    console.log(`Message sent: ${info.messageId}`);
 }
 
-module.exports = { router, companyToClientMail };
+async function clientToCompanyMail(email, clientEmail, clientName) {
+    const { subject, text } = email;
+    // create a nodemailer transport object
+    let transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'burgerhut1212@gmail.com',
+            pass: process.env.BURGER_COMPANY
+        }
+    });
+
+    // send the email
+    let info = await transporter.sendMail({
+        from: `${clientName}`,
+        to: 'burgerhut1212@gmail.com',
+        subject: subject,
+        text: text
+    });
+}
+
+//Authenticates user
+router.post('/send-to-company', async (req, res) => {
+    const { email, username, emailType, message } = req.body;
+    clientToCompanyMail({ subject: `${emailType} - ${username}`, text: message }, email, username);
+    res.json({ status: 'SUCCESS' });
+});
+
+module.exports = { router, companyToClientMail, clientToCompanyMail };

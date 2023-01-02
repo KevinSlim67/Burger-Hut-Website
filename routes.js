@@ -14,9 +14,6 @@ function generateRoutes(app) {
     const ordersRouter = require('./routes/orders');
     app.use('/orders', ordersRouter);
 
-    const contactRouter = require('./routes/contact');
-    app.use('/contact', contactRouter);
-
     const userFavoritesRouter = require('./routes/user_favorites');
     app.use('/users-favorites', userFavoritesRouter);
 
