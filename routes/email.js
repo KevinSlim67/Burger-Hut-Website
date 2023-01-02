@@ -3,14 +3,7 @@ const router = express.Router();
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
-//Send email to notify user that their order was received
-router.post('/received', async (req, res) => {
-    const { userId, firstName } = req.body;
-});
-
-
-
-async function companyToClientMail(email) {
+async function companyToClientMail(email, clientEmail) {
     const { subject, html } = email;
     // create a nodemailer transport object
     let transporter = nodemailer.createTransport({
@@ -26,7 +19,7 @@ async function companyToClientMail(email) {
     // send the email
     let info = await transporter.sendMail({
         from: 'Burger Hut <burgerhut1212@gmail.com>',
-        to: 'sappeur67@gmail.com',
+        to: clientEmail,
         subject: subject,
         html: html
     });

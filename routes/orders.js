@@ -37,7 +37,7 @@ router.post('/add', async (req, res) => {
 
 //Adds food items to order
 router.post('/add-food', async (req, res) => {
-    const { orderId, cart } = req.body;
+    const { orderId, cart, email } = req.body;
     const foods = cart.map(c => [orderId, c.id, c.amount]);
 
     const sql = `INSERT INTO Order_Food (order_id, food_id, amount) VALUES ?`;
@@ -54,7 +54,7 @@ router.post('/add-food', async (req, res) => {
                     const order = results[0];
                     let emailTemp = '';
                     emailTemp = emailTemplate(order, 'Thank you for placing an order with Burger Hut. Your order is being prepared and will be ready for pickup soon.');
-                    companyToClientMail({ subject: `Order Confirmation - ${orderId}`, html: emailTemp });
+                    companyToClientMail({ subject: `Order Confirmation - ${orderId}`, html: emailTemp }, email);
                     res.json({ status: 'SUCCESS' });
                 }
             });
@@ -136,14 +136,14 @@ router.get('/:branchId/InTransit', async (req, res) => {
 
 //Change Order Status
 router.patch('/status', async (req, res) => {
-    const { orderId, status, driverId, deliveredDate } = req.body;
+    const { orderId, status, driverId, deliveredDate} = req.body;
     let sql = `UPDATE \`Order\` SET status = ?, driver_id = ?, delivered_date = ? WHERE id = ?`;
     db.query(sql, [status, driverId, deliveredDate, orderId], (error, results, fields) => {
         if (error) {
             res.json({ status: 'ERROR' });
             console.error(error.message);
         } else {
-            const sql = `SELECT * FROM \`Order\` WHERE id = ?;`;
+            const sql = `SELECT \`Order\`.*, email FROM \`Order\` JOIN User ON User.id = \`Order\`.user_id WHERE \`Order\`.id = ?;`;
             db.query(sql, [orderId], (error, results, fields) => {
                 if (error) {
                     console.error(error.message);
@@ -153,15 +153,15 @@ router.patch('/status', async (req, res) => {
                     switch (status) {
                         case 'Delivered':
                             emailTemp = emailTemplate(order, 'Your order has been set as delivered. If you think this is a mistake, please contact us.');
-                            companyToClientMail({ subject: `Order Successfully Delivered - ${order.id}`, html: emailTemp });
+                            companyToClientMail({ subject: `Order Successfully Delivered - ${order.id}`, html: emailTemp }, order.email);
                             break;
                         case 'In Transit':
                             emailTemp = emailTemplate(order, 'Thank you for placing an order with Burger Hut. Your order is now done, and is currently on its way to be delivered to you.');
-                            companyToClientMail({ subject: `Order In Transit - ${order.id}`, html: emailTemp });
+                            companyToClientMail({ subject: `Order In Transit - ${order.id}`, html: emailTemp }, order.email);
                             break;
                         case 'Cancelled':
-                            emailTemp = emailTemplate(order, 'Thank you for placing an order with Burger Hut. It seems your driver decided to cancel your order. We sincerely apologize for the trouble, if you wish to order again, either call us or order on the side once more.');
-                            companyToClientMail({ subject: `Order Cancelled - ${order.id}`, html: emailTemp });
+                            emailTemp = emailTemplate(order, 'Thank you for placing an order with Burger Hut. It seems your driver decided to cancel your order. We sincerely apologize for the trouble, if you wish to order again, either call us or order using our website.');
+                            companyToClientMail({ subject: `Order Cancelled - ${order.id}`, html: emailTemp }, order.email);
                             break;
                     }
                 }
@@ -175,12 +175,15 @@ router.patch('/status', async (req, res) => {
 function emailTemplate(order, description) {
     const list = [];
     for (const key in order) {
-        if (!key.includes('_id') && order[key] !== null) {
+        if (!key.includes('_id') && order[key] !== null && key !== 'email') {
             //format the element accordingly
             let capitalKey = key.charAt(0).toUpperCase() + key.slice(1);
             capitalKey = capitalKey.replace('_', ' ');
+
             if (capitalKey === 'Id') capitalKey = 'Order Id';
             if (key === 'total_price') order[key] = order[key] + '$';
+            if (key === 'estimated_time') order[key] = order[key] + ' minutes';
+
             list.push(`<li><strong>${capitalKey}:</strong> ${order[key]}</li>`);
         }
     }
