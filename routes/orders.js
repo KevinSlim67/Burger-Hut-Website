@@ -66,7 +66,7 @@ router.post('/add-food', async (req, res) => {
 router.get('/:userId', async (req, res) => {
     const userId = req.params.userId;
 
-    const sql = `SELECT \`Order\`.*, first_name, last_name FROM \`Order\` LEFT JOIN Driver ON driver_id = Driver.id WHERE user_id = ? ORDER BY ordered_date DESC LIMIT 10;`;
+    const sql = `SELECT \`Order\`.*, first_name, last_name, Branch.city FROM \`Order\` LEFT JOIN Driver ON driver_id = Driver.id JOIN Branch ON Branch.id = \`Order\`.branch_id WHERE user_id = ? ORDER BY ordered_date DESC LIMIT 10;`;
     db.query(sql, [userId], (error, results, fields) => {
         if (error) {
             res.json({ status: 'ERROR' });
