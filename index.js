@@ -10,18 +10,11 @@ db.connect(function (err) {
     console.log("SQL Database Connected");
 });
 
-const whitelist = ['http://127.0.0.1:5500/', 'https://burger-hut.netlify.app'];
 app.use(cors({
-  origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'], // allow these methods
-  allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'] // allow these headers
-}));
+    origin: '*',
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'], // allow these methods
+    allowedHeaders: ['Content-Type', 'Authorization'] // allow these headers
+  }));
 
 app.use(express.json()); //allow express server to use json
 app.use(express.urlencoded()) //decodes data sent from HTML form
