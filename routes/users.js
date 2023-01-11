@@ -68,7 +68,7 @@ router.patch('/edit', async (req, res) => {
         if (user[u] !== null) arr.push(`${u} = '${user[u]}'`);
     }
     const sets = arr.join(', ');
-    const sql = `UPDATE USER SET ${sets} WHERE id = ?;`;
+    const sql = `UPDATE User SET ${sets} WHERE id = ?;`;
 
     db.query(sql, [user.id], (error, results, fields) => {
         if (error) {

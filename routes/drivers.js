@@ -6,7 +6,7 @@ const db = require('./../db');
 router.post('/auth', async (req, res) => {
     const { email, password } = req.body;
     if (email && password) {
-        const sql = `SELECT * FROM DRIVER WHERE email = ? AND password = ?`;
+        const sql = `SELECT * FROM Driver WHERE email = ? AND password = ?`;
         db.query(sql, [email, password], (error, results, fields) => {
             if (error) console.log(error.code);
 

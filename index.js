@@ -4,7 +4,6 @@ require('dotenv').config();
 const app = express();
 const db = require('./db');
 const { generateRoutes } = require('./routes');
-const { companyToClientMail } = require('./routes/email');
 
 db.connect(function (err) {
     if (err) throw err;
@@ -24,7 +23,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-generateRoutes(app); //generate DB-related routes
+generateRoutes(app);
 
 //start the sever
 app.listen(process.env.PORT || 5000, () => console.log("Server Started"));

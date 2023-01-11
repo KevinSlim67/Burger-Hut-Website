@@ -36,7 +36,8 @@ router.get('/:userId', async (req, res) => {
 //Delete a user's address;
 router.delete('/delete', async (req, res) => {
     const { id } = req.body;
-    const sql = `DELETE FROM Address WHERE id = ?`;
+    //10037 is the default delete user where all deleted addresses will go as to not affect foreign key constraints
+    const sql = `UPDATE Address SET user_id = 10037 WHERE id = ?`;
     db.query(sql, [id], (error, results, fields) => {
         if (error) {
             res.json({ status: 'ERROR' });

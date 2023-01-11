@@ -40,7 +40,7 @@ async function clientToCompanyMail(email, clientEmail, clientName) {
 
     // send the email
     let info = await transporter.sendMail({
-        from: `${clientName}`,
+        from: `${clientEmail}`,
         to: 'burgerhut1212@gmail.com',
         subject: subject,
         text: text
