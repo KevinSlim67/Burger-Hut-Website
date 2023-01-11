@@ -10,7 +10,7 @@ db.connect(function (err) {
     console.log("SQL Database Connected");
 });
 
-const whitelist = ['http://127.0.0.1:5500', 'https://burger-hut.netlify.app'];
+const whitelist = ['http://127.0.0.1:5500/', 'https://burger-hut.netlify.app'];
 app.use(cors({
   origin: (origin, callback) => {
     if (whitelist.includes(origin)) {
