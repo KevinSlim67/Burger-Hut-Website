@@ -18,7 +18,9 @@ app.use(cors({
     } else {
       callback(new Error('Not allowed by CORS'))
     }
-  }
+  },
+  methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'], // allow these methods
+  allowedHeaders: ['Content-Type', 'Authorization'] // allow these headers
 }));
 
 app.use(express.json()); //allow express server to use json
