@@ -20,7 +20,7 @@ app.use(cors({
     }
   },
   methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'], // allow these methods
-  allowedHeaders: ['Content-Type', 'Authorization'] // allow these headers
+  allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'] // allow these headers
 }));
 
 app.use(express.json()); //allow express server to use json
