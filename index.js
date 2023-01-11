@@ -10,7 +10,17 @@ db.connect(function (err) {
     console.log("SQL Database Connected");
 });
 
-app.use(cors()); //allows communication between server and frontend
+const whitelist = ['http://127.0.0.1:5500', ''];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}));
+
 app.use(express.json()); //allow express server to use json
 app.use(express.urlencoded()) //decodes data sent from HTML form
 
