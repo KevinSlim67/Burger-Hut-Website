@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const { HOST, USER, PASSWORD, DATABASE } = process.env;
 
 const db = mysql.createPool({
-    connectionLimit: 5,
+    connectionLimit: 10,
     host: HOST,
     user: USER,
     password: PASSWORD,
