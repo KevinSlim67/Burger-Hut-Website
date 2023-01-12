@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/assets/logo_primary.png" />
+    <title>Burger Hut | Home</title>
+
+    <link rel="stylesheet" href="/./global.css" type="text/css" />
+    <link rel="stylesheet" href="/./home_page/home.css" type="text/css" />
+
+    <script src="/./global.js" defer></script>
+    <script src="/./components/navbar.js" defer></script>
+    <script src="/./components/footer.js" defer></script>
+    <script src="/./components/popup.js" defer></script>
+    <script src="/./components/spinner.js" defer></script>
+
+    <script src="https://www.youtube.com/iframe_api" defer></script>
+    <script src="/./home_page/home.js" defer></script>
+    <script src="/./home_page/slider.js" defer></script>
+    <script src="/./home_page/reviews.js" defer></script>
+  </head>
+
+  <body>
+    <div id="layout" class="layout">
+      <navbar-component></navbar-component>
+
+      <section class="slider-wrapper">
+        <button class="slide-arrow" id="slide-arrow-prev">&#8249;</button>
+        <button class="slide-arrow" id="slide-arrow-next">&#8250;</button>
+        <ul class="slides-container" id="slides-container">
+          <li class="slide new-food">
+            <img src="./../assets/home/carousel/1.jpg" alt="BBQ Pizza" />
+            <div class="content">
+              <span>New</span>
+              <h2>BBQ Chicken Pizza</h2>
+              <p>
+                This BBQ chicken pizza has spicy barbecue sauce, diced chicken,
+                peppers, onion, and cilantro, all covered with cheese and baked
+                to bubbly goodness!
+              </p>
+              <a href="/order" class="type1"
+                >Order Now</a
+              >
+            </div>
+          </li>
+
+          <li class="slide new-food">
+            <img src="./../assets/home/carousel/2.jpeg" alt="BBQ Pizza" />
+            <div class="content">
+              <span>New</span>
+              <h2>Crispy Fried Chicken</h2>
+              <p>
+                This bucket of crispy fried chicken goodness comes with barbecue
+                sauce, and can be shared with the whole family!
+              </p>
+              <a href="/order" class="type1"
+                >Order Now</a
+              >
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="about-us" id="about-us">
+        <div class="video">
+          <iframe
+            id="player"
+            src="https://www.youtube.com/embed/ESFJOylxAi8"
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            onload="videoLoaded()"
+          >
+          </iframe>
+          <spinner-component></spinner-component>
+        </div>
+
+        <div>
+          <h2 class="title">About The Food You Love</h2>
+          <p>
+            Welcome to Burger Hut, the home of delicious, fast-food burgers! We
+            have been serving up fresh, mouth-watering burgers to satisfied
+            customers for years. Our burgers are made with only the highest
+            quality ingredients, ensuring that every bite is bursting with
+            flavor. In addition to our burgers, we also offer a wide variety of
+            sides and drinks to complete your meal. Our friendly staff is always
+            ready to welcome you with a smile and ensure that you have an
+            enjoyable dining experience. So come on in to Burger Hut and treat
+            yourself to a tasty burger today!
+          </p>
+        </div>
+      </section>
+
+      <section class="contact-us">
+        <div>
+          <img src="./../assets/home/book_birthday.jpg" />
+          <h2>Birthday Parties</h2>
+          <p>Celebrate your birthday with us, and enjoy our birthday deals !</p>
+          <a href="/contact" class="type1"
+            >Book now</a
+          >
+        </div>
+        <div>
+          <img src="./../assets/home/ask_question.jpg" />
+          <h2>Our Food, Your Questions</h2>
+          <p>Got any question ? We'd love to answer it !</p>
+          <a href="/contact" class="type1"
+            >Ask a question</a
+          >
+        </div>
+      </section>
+
+      <section class="app">
+        <div class="content">
+          <h2>Amazing deals every day!</h2>
+          <p>
+            Download the Burger Hut App and start redeeming delicious offers.
+          </p>
+          <div>
+            <button onclick="notImplemented()">
+              <img src="./../assets/home/app_store.png" />
+            </button>
+            <button onclick="notImplemented()">
+              <img src="./../assets/home/play_store.png" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="reviews" id="reviews">
+        <h2 class="title">What Our Customers Say ?</h2>
+        <div class="reviews-list"></div>
+        <button class="scroll-btn scroll-left" id="scroll-left"></button>
+        <button class="scroll-btn scroll-right" id="scroll-right"></button>
+      </section>
+
+      <section class="hiring" id="hiring">
+        <h2>Looking for a work opportunity ?</h2>
+        <p>
+          Send your us your CV, and we'll get back to you as soon as possible!
+        </p>
+        <a class="type1" href="/contact"
+          >Apply Now</a
+        >
+      </section>
+
+      <footer-component></footer-component>
+    </div>
+  </body>
+</html>

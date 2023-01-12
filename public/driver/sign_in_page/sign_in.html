@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/assets/logo_primary.png">
+    <title>Burger Hut | Driver | Sign In</title>
+
+    <link rel="stylesheet" href="/./global.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="/./components/account_form/form.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/./driver/sign_in_page/sign.css" type="text/css" />
+
+    <script src="/./global.js" async></script>
+    <script src="/./components/navbar.js" defer></script>
+    <script src="/./components/footer.js" defer></script>
+    <script src="/./driver/sign_in_page/connection.js" defer></script>
+  </head>
+
+  <body>
+    <div id="layout">
+      <navbar-component></navbar-component>
+
+      <section class="auth">
+        <h2>Log in as a driver now!</h2>
+
+        <form
+          class="account-form"
+          name="login"
+          onsubmit="authenticateDriver(event)"
+        >
+          <div class="input-box">
+            <input
+              class="style1"
+              type="email"
+              name="email"
+              id="email"
+              placeholder=" "
+              required
+            />
+            <span>Email</span>
+          </div>
+
+          <div class="input-box">
+            <input
+              class="style1"
+              type="password"
+              name="password"
+              id="password"
+              placeholder=" "
+              required
+            />
+            <span>Password</span>
+          </div>
+
+          <div class="remember-me">
+            <input
+              type="checkbox"
+              name="rememberMe"
+              value="true"
+              id="rememberMe"
+            />
+            <p>Remember me</p>
+          </div>
+
+          <div class="container">
+            <input type="submit" class="type1 full" value="Sign In" />
+            <a href="#" class="small forgot-password">Forgot Password ?</a>
+          </div>
+
+          <div id="message" class="message"></div>
+        </form>
+      </section>
+
+      <footer-component></footer-component>
+    </div>
+  </body>
+</html>
