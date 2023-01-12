@@ -13,26 +13,38 @@ router.get('/', async (req, res) => {
     });
 });
 
-//Get food with specific category
 router.get('/:category', async (req, res) => {
     const category = req.params.category;
-    const sql = `SELECT * FROM Food WHERE category = ?`;
+    const sql = `SELECT Food.*, ingredient FROM Food JOIN Food_Ingredient ON Food.id = Food_Ingredient.food_id WHERE category = ?`;
     db.query(sql, [category], (error, results, fields) => {
         if (error) return console.error(error.message);
+
+        const foods = {};
         results.forEach(r => {
-            //send image if it exists, send placeholder image if not
-            const imagePath = r.image;
-            try {
-                if (imagePath !== null || fs.existsSync(imagePath)) {
-                    r.image = fs.readFileSync(imagePath, 'base64');
-                } else {
-                    r.image = fs.readFileSync('assets/food/placeholder.png', 'base64');
+            if (!foods[r.id]) {
+                foods[r.id] = {
+                    ingredients: []
                 }
-            } catch (err) {
-                console.error(err)
+                for (let key in r) {
+                    if (key !== "ingredient") {
+                        foods[r.id][key] = r[key];
+                    }
+                }
+                //send image if it exists, send placeholder image if not
+                const imagePath = r.image;
+                try {
+                    if (imagePath !== null || fs.existsSync(imagePath)) {
+                        foods[r.id].image = fs.readFileSync(imagePath, 'base64');
+                    } else {
+                        foods[r.id].image = fs.readFileSync('assets/food/placeholder.png', 'base64');
+                    }
+                } catch (err) {
+                    console.error(err)
+                }
             }
+            foods[r.id].ingredients.push(r.ingredient);
         });
-        res.json(results);
+        res.json(Object.values(foods));
     });
 });
 

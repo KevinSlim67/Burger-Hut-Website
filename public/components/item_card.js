@@ -23,7 +23,7 @@ function fillItemsList(arr) {
 
 //create item card
 function createItem(item) {
-    const { id, name, price, image, category } = item;
+    const { id, name, price, image, category, ingredients } = item;
     const itemCard = document.createElement('div');
     itemCard.classList.add('food-card');
 
@@ -44,10 +44,9 @@ function createItem(item) {
         `;
 
     //get ingredients, capitalize them, then add them to item object
-    getIngredients(id).then((res) => {
-        item.ingredients = [...res].map(i => {
-            return i.charAt(0).toUpperCase() + i.slice(1).toLowerCase();
-        });
+
+    item.ingredients = ingredients.map(i => {
+        return i.charAt(0).toUpperCase() + i.slice(1).toLowerCase();
     });
 
     itemCard.addEventListener('click', () => showItemDetails(item), false);
