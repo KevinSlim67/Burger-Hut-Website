@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:category', async (req, res) => {
     const category = req.params.category;
-    const sql = `SELECT Food.*, ingredient FROM Food JOIN Food_Ingredient ON Food.id = Food_Ingredient.food_id WHERE category = ?`;
+    const sql = `SELECT Food.*, ingredient FROM Food LEFT JOIN Food_Ingredient ON Food.id = Food_Ingredient.food_id WHERE category = ?`;
     db.query(sql, [category], (error, results, fields) => {
         if (error) return console.error(error.message);
 
