@@ -42,7 +42,7 @@ router.get('/:category', async (req, res) => {
                     console.error(err)
                 }
             }
-            foods[r.id].ingredients.push(r.ingredient);
+            if(r.ingredient) foods[r.id].ingredients.push(r.ingredient);
         });
         res.json(Object.values(foods));
     });
