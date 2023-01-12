@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/./assets/logo_primary.png">
+    <title>Burger Hut | Profile</title>
+
+    <link rel="stylesheet" href="/./global.css" type="text/css" />
+    <link rel="stylesheet" href="/./components/account_form/form.css" type="text/css" />
+    <link rel="stylesheet" href="/./profile_page/profile.css" type="text/css" />
+
+    <script src="/./global.js" defer></script>
+    <script src="/./components/navbar.js" defer></script>
+    <script src="/./components/footer.js" defer></script>
+    <script src="/./components/popup.js" defer></script>
+    <script src="/./components/account_form/country_code.js" defer></script>
+    <script src="/./components/account_form/date_of_birth.js" defer></script>
+    <script src="/./profile_page/user_info.js" defer></script>
+    <script src="/./profile_page/addresses.js" defer></script>
+  </head>
+
+  <body>
+    <div id="layout">
+      <navbar-component></navbar-component>
+
+      <main class="sm">
+        <form id="account-details" onsubmit="updateInfo(event)" name="editProfile" class="account-form left-decoration">
+          <h2 class="title">Edit Account Details</h2>
+          <div class="double-field">
+            <div class="input-box">
+              <input
+                class="style1"
+                type="text"
+                name="firstName"
+                id="firstName"
+                placeholder=" "
+              />
+              <span>First Name</span>
+            </div>
+
+            <div class="input-box">
+              <input
+                class="style1"
+                type="text"
+                name="lastName"
+                id="lastName"
+                placeholder=" "
+              />
+              <span>Last Name</span>
+            </div>
+          </div>
+
+          <div>
+            <h3>Gender</h3>
+            <div class="triple-field">
+              <div class="option">
+                <label>Male</label>
+                <input type="radio" name="gender" id="male" value="male" />
+              </div>
+              <div class="option">
+                <label>Female</label>
+                <input type="radio" name="gender" id="female" value="female" />
+              </div>
+              <div class="option">
+                <label>Other</label>
+                <input type="radio" name="gender" id="other" value="other" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3>Date of birth</h3>
+            <div class="triple-field">
+              <select name="day" id="day"></select>
+              <select name="month" id="month"></select>
+              <select name="year" id="year"></select>
+            </div>
+          </div>
+
+          <div>
+            <h3>Phone number</h3>
+            <div class="phone-field">
+              <select
+                class="style1"
+                name="countryCode"
+                id="country-code"
+              ></select>
+              <input class="style1" type="tel" name="phone" id="phone" />
+            </div>
+          </div>
+
+          <input class="type1 full submit" type="submit" value="Save Details" />
+        </form>
+
+        <hr />
+
+        <section id="address-book" class="address-book left-decoration">
+          <h2 class="title">Addresses</h2>
+          <div id="address-list" class="address-list"></div>
+          <div class="btn-container">
+            <button class="add" onclick="createAddress()"></button>
+            <span>Add New Address</span>
+          </div>
+        </section>
+      </main>
+
+      <footer-component></footer-component>
+    </div>
+  </body>
+</html>

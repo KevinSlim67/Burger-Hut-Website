@@ -1,0 +1,128 @@
+header {
+  position: relative;
+  height: clamp(200px, 40vw, 550px);
+  border-radius: 5px;
+  border: solid 1px var(--gray-50);
+  margin-bottom: 2em;
+}
+
+header img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5) sepia(0.5) saturate(400%);
+}
+
+header p {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  font-size: clamp(1.5em, 2.5vw, 2em);
+  color: white;
+  font-weight: 800;
+  text-shadow: 1px 1px black;
+  text-align: center;
+  line-height: 1.8em;
+}
+
+header p span {
+  color: var(--primary-400);
+  font-size: 1.3em;
+}
+
+.account-form textarea.style1 {
+  height: 15em;
+}
+
+@media (min-width: 1100px) {
+  .left-decoration::before,
+  .left-decoration::after {
+    display: block;
+  }
+}
+
+form {
+  --bg: white;
+  --input-h: 3em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5em;
+  width: 100%;
+  background-color: white;
+  border: solid 1px var(--gray-50);
+  padding: 3rem 0.5rem;
+  border-radius: 5px;
+}
+
+@media (min-width: 600px) {
+  form {
+    padding: 3rem;
+  }
+}
+
+.faq .collapsible {
+  position: relative;
+  background-color: white;
+  color: #444;
+  cursor: pointer;
+  padding: 1.3em;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 1em;
+}
+
+.faq .active,
+.faq .collapsible:hover {
+  background-color: var(--gray-100);
+}
+
+.faq .collapsible:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 1.3em;
+  transform: translateY(-50%);
+  width: 2.2em;
+  height: 2.2em;
+  background-image: url(/./assets/icons/expand_left.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  filter: brightness(0.5) grayscale(100%);
+  transition: transform 0.2s ease;
+}
+
+.faq .content {
+  font-size: 0.9em;
+  padding: 0 1.3em;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-out;
+}
+
+.faq .active:after {
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.faq .active + .content {
+  padding: 1em 1.3em;
+  max-height: 1000px;
+  transition: all 0.2s ease-out;
+}
+
+.faq ul {
+  list-style: none;
+}
+
+.faq li button {
+  font-size: 2em;
+}
+
+.faq li:not(:last-of-type) {
+  margin-bottom: 1em;
+}

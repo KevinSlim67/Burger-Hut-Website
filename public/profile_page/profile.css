@@ -1,0 +1,281 @@
+.left-decoration {
+  position: relative;
+}
+
+.left-decoration::before {
+  display: none;
+  content: "";
+  position: absolute;
+  left: -5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: calc(100% + 20px);
+  border: solid 3px var(--gray-150);
+  border-style: none none none solid;
+  border-radius: 100px;
+}
+
+.left-decoration::after {
+  display: none;
+  content: "";
+  position: absolute;
+  left: -5rem;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 60px;
+  height: 60px;
+  background-color: var(--gray-150);
+  border-radius: 35%;
+
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 70%;
+}
+
+.account-form::after {
+  background-image: url(./../assets/icons/user.png);
+}
+
+.address-book::after {
+  background-image: url(./../assets/icons/address.png);
+}
+
+@media (min-width: 1100px) {
+  .left-decoration::before,
+  .left-decoration::after {
+    display: block;
+  }
+}
+
+hr {
+  color: rgba(0, 0, 0, 0.1);
+  margin: 2rem auto !important;
+}
+
+/* address-book ----------------------------- */
+main {
+  width: auto;
+}
+
+.address-book h2.title {
+  margin-bottom: 2em;
+}
+
+.address-book .address-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.address-book .address {
+  position: relative;
+  background-color: white;
+  width: 100%;
+  height: 13em;
+  padding: 1.5rem;
+  border-radius: 0.5em;
+  -webkit-box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.3);
+}
+
+.address-book .address p {
+  padding: 0.4em 0;
+}
+
+.address-book .btn-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--gray-400);
+  font-size: 1.2rem;
+  margin-top: 2em;
+}
+
+.address-book button.add {
+  background-image: url(./../assets/icons/add_2.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 70%;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  transition: none;
+}
+
+.address-book button.add:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 600px) {
+  .address-book .address {
+    -webkit-box-shadow: 0px 2px 1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.address-book h3 {
+  color: black;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.address-book .address > p {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  max-width: 80%;
+  line-height: 1.1rem;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.address-book .address button {
+  position: absolute;
+  right: 1.5rem;
+  width: clamp(30px, 3vw, 45px);
+  height: clamp(30px, 3vw, 45px);
+  background-color: rgba(0, 0, 0, 0.12);
+  border-style: none;
+  border-radius: 50%;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50%;
+  transition: none;
+}
+
+.address-book .address button:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.address-book .address .delete {
+  top: 1.2rem;
+  background-image: url(./../assets/icons/white_x.png);
+}
+
+.address-book .address .edit {
+  bottom: 1.2rem;
+  background-image: url(./../assets/icons/white_edit.png);
+}
+/* ------------------------------------------ */
+
+/* create-address ----------------------------- */
+.create-form input[type="number"]::-webkit-outer-spin-button,
+.create-form input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.create-form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.create-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-form form {
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+
+  position: relative;
+  max-width: 900px;
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.2em;
+  background-color: var(--bg);
+  
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2);
+}
+
+.create-form form > button.exit {
+  top: 1rem;
+  right: 1rem;
+  position: absolute;
+  background-color: transparent;
+  border-style: none;
+  border-radius: 50%;
+
+  width: 1.8rem;
+  height: 1.8rem;
+  background-image: url(./../assets/icons/black_x.png);
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
+  transition: none;
+}
+
+.create-form form > button.exit:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.create-form form .unsplit {
+  flex-direction: column !important;
+  gap: 2.2rem !important;
+}
+
+@media (min-width: 600px) {
+  .create-form form {
+    height: 85%;
+    padding: 3rem 9rem;
+    overflow-y: scroll;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .create-form .shape1 {
+    position: absolute;
+    top: -5rem;
+    right: -3rem;
+    width: 20rem;
+    height: 22rem;
+    border-radius: 42% 58% 39% 61% / 30% 47% 53% 70%;
+    background-color: var(--primary-400-40);
+  }
+
+  .create-form .shape2 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    left: -3rem;
+    width: 18rem;
+    height: 22rem;
+    border-radius: 57% 43% 83% 17% / 41% 40% 60% 59%;
+    background-color: var(--primary-400-40);
+  }
+
+  .create-form form::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  .create-form form h2 {
+    margin-bottom: 0.8em;
+  }
+
+  .create-form form .unsplit {
+    flex-direction: row !important;
+    gap: 1rem !important;
+  }
+}
+/* -------------------------------------------- */

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/assets/logo_primary.png">
+    <title>Burger Hut | Order History</title>
+
+    <link rel="stylesheet" href="/./global.css" type="text/css" />
+    <link rel="stylesheet" href="/./order_history_page/order_history.css" type="text/css" />
+
+    <script src="/./global.js" defer></script>
+    <script src="/./components/navbar.js" defer></script>
+    <script src="/./components/footer.js" defer></script>
+    <script src="/./components/popup.js" defer></script>
+    <script src="/./order_history_page/order_history.js" defer></script>
+  </head>
+
+  <body>
+    <div id="layout">
+      <navbar-component></navbar-component>
+
+      <main class="order-history sm">
+        <a class="type1 full" href="/order">Order Now</a>
+        <p class="title">Here are your latest orders</p>
+        <div id="order-list" class="order-list"></div>
+      </main>
+
+      <footer-component></footer-component>
+    </div>
+  </body>
+</html>

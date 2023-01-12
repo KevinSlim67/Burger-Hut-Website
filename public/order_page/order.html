@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/public/assets/logo_primary.png">
+    <title>Burger Hut | Order</title>
+
+    <link rel="stylesheet" href="/./global.css" type="text/css" />
+    <link rel="stylesheet" href="/./order_page/order.css" type="text/css" />
+
+    <script src="/./global.js" defer></script>
+    <script src="/./components/navbar.js" defer></script>
+    <script src="/./components/footer.js" defer></script>
+    <script src="/./components/popup.js" defer></script>
+    <script src="/./components/spinner.js" defer></script>
+
+    <script src="/./order_page/welcome_script.js" defer></script>
+    <script src="/./components/item_card.js" defer></script>
+    <script src="/./components/item_card_details.js" defer></script>
+    <script src="/./order_page/order.js" defer></script>
+  </head>
+
+  <body>
+    <div id="layout" class="layout">
+      <a id="cart-btn" href="/cart" class="cart-btn primary-gradiant round">
+        <img src="./../assets/icons/cart.png" alt="" />
+        <span id="cart-btn-amount"></span>
+      </a>
+
+      <navbar-component></navbar-component>
+
+      <section class="welcome"></section>
+      
+      <section class="offer">
+        <div>
+          <h2>Offer of the day</h2>
+          <p>Chicken burger with 20% discount</p>
+        </div>
+        <button>Order Now</button>
+        <img
+          srcset="
+            ./../assets/mobile/burger.png    300w,
+            ./../assets/computer/burger.png 1330w
+          "
+          sizes="(max-width: 600px) 300px, 1330px"
+          alt="burger offer"
+          src="./../assets/computer/burger.png"
+        />
+      </section>
+
+      <section class="selectors">
+        <div class="search-bar" data-search>
+          <img src="./../assets/icons/search.png" alt="" />
+          <input id="search-bar" type="text" placeholder="Find your food" />
+        </div>
+        <button onclick="search()" class="search type1">Search</button>
+      </section>
+
+      <section id="category-list" class="category-list">
+        <button>Beef</button>
+        <button>Chicken</button>
+        <button>Fish</button>
+        <button>Pizza</button>
+        <button>Salad</button>
+        <button>Side</button>
+        <button>Drink</button>
+      </section>
+
+      <section class="food-list">
+        <div id="food-list" class="layout"></div>
+      </section>
+
+      <footer-component></footer-component>
+    </div>
+  </body>
+</html>

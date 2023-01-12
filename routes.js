@@ -1,4 +1,7 @@
 function generateRoutes(app) {
+    const pagesRouter = require('./pages');
+    app.use('/', pagesRouter);
+
     const usersRouter = require('./routes/users');
     app.use('/users', usersRouter);
 
