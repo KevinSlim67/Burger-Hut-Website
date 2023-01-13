@@ -116,7 +116,7 @@ function createReview(review) {
         <p>"${text}"</p>
         <div class="bottom">
             <div class="user">
-                <div class="img-container"><img src=${image}></div>
+                <div class="img-container"><img src=${image} alt="${author} profile picture" loading="lazy"></div>
                 <span>${author}</span>
             </div>
             <div class="stars">${starsField}</div>
