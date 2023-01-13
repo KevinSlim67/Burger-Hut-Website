@@ -128,13 +128,13 @@ function userSignedIn() {
         <a href="/order-history"
          class="nav-order-history" title="Order History"></a>
 
-        <a href="profile#address-book"
+        <a href="/profile#address-book"
          class="nav-address-book" title="Address Book"></a>
 
-        <a href="profile#account-details"
+        <a href="/profile#account-details"
          class="nav-profile" title="Profile"></a>
 
-        <a href="cart"
+        <a href="/cart"
          class="nav-cart" title="Cart"></a>
 
         <span class="name">${sessionStorage.getItem('firstName')}</span>
@@ -143,11 +143,11 @@ function userSignedIn() {
 
     <button id="hamburger" class="hamburger"></button>
     <ul id="dropdown-list" class="dropdown-list">
-        <li><a href="./../favorite_page/favorite.html">Favorites</a></li>
-        <li><a href="./../order_history_page/order_history.html">Order History</a></li>
-        <li><a href="./../profile_page/profile.html#address-book">Address Book</a></li>
-        <li><a href="./../profile_page/profile.html#account-details">Profile</a></li>
-        <li><a href="./../cart_page/cart.html">Cart</a></li>
+        <li><a href="/favorite">Favorites</a></li>
+        <li><a href="/order-history">Order History</a></li>
+        <li><a href="/address-book#address-book>Address Book</a></li>
+        <li><a href="/profile#account-details">Profile</a></li>
+        <li><a href="/cart">Cart</a></li>
         <li><button class="sign-out">Sign Out</button></li>
     </ul>
 </nav> 

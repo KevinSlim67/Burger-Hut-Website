@@ -213,8 +213,8 @@
   height: 2.8rem;
   display: flex;
   gap: 0.5rem;
-  justify-content: center;
   overflow-x: hidden;
+  justify-content: center;
 }
 
 .category-list button {
@@ -236,9 +236,10 @@
   color: white;
 }
 
-@media (pointer: coarse) {
+@media (pointer: coarse) or (max-width: 800px) {
   .category-list {
     overflow-x: scroll;
+    justify-content: start;
   }
 }
 /* ------------------------------------------ */
@@ -476,6 +477,14 @@
 .food-details .details .split-container {
   display: flex;
   width: 100%;
+  justify-content: space-between;
+}
+
+.food-details .details .split-container:first-of-type {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 1.5em;
 }
 
 .food-details .details .left {
@@ -490,7 +499,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 1.5em;
 }
 
 .food-details .details .counter {

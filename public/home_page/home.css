@@ -209,7 +209,7 @@
   }
 
   .about-us iframe {
-    min-height: calc((var(--section-height) / 2))
+    min-height: calc((var(--section-height) / 2));
   }
 }
 /* ---------------------------------------------- */
@@ -221,6 +221,10 @@
   justify-content: space-between;
   gap: 2rem;
   font-size: 1rem;
+}
+
+.contact-us button {
+  white-space: nowrap !important;
 }
 
 .contact-us > div {
@@ -382,7 +386,7 @@
 }
 
 .reviews h2 {
-  margin-bottom: clamp(1rem, 2vw , 2rem);
+  margin-bottom: clamp(1rem, 2vw, 2rem);
 }
 
 .reviews .reviews-list {

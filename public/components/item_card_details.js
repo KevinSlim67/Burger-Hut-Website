@@ -129,13 +129,15 @@ function createItemDetails(item) {
         <div class="info">
             <div>
                 <div class="split-container">
+                    <h3>${name}</h3>
+                    <h4>${price}</h4>
+                </div>
+                <div class="split-container">
                     <div class="left">
-                        <h3>${name}</h3>
                         ${ratingDiv}
                         ${cookTimeDiv}
                     </div>
                     <div class="right"> 
-                        <h4>${price}</h4>
                         <div class="counter">
                         <button onclick="decrementCounter(this)">-</button>
                         <span id="amount" class="number">0</span>
