@@ -1,5 +1,28 @@
 const url = '';
 
+(function addFavicon() {
+    let link = document.createElement("link");
+    link.setAttribute("href", "/assets/logo_primary.png");
+    link.setAttribute("rel", "icon");
+    document.head.appendChild(link);
+})();
+
+function addScripts() {
+    const scripts = [
+        "/components/navbar.js",
+        "/components/footer.js",
+        "/components/popup.js",
+    ];
+
+    scripts.forEach(s => {
+        const script = document.createElement('script');
+        script.src = s;
+        document.head.appendChild(script);
+    })
+};
+
+addScripts();
+
 let driverId = JSON.parse(sessionStorage.getItem('driverId'));
 let userId = JSON.parse(sessionStorage.getItem('userId'));
 let userEmail = JSON.stringify(sessionStorage.getItem('userEmail'));

@@ -2,6 +2,12 @@ getFavoriteItems(userId);
 
 //get list of user's favorite food items 
 function getFavoriteItems(id) {
+    const list = document.getElementById('food-list');
+    list.innerHTML = '<spinner-component></spinner-component>';
+
+    const spinner = document.querySelector('spinner-component');
+    spinner.setDisplayBlock();
+    
     fetch(`${url}/users-favorites/${id}`, {
         method: "GET",
         headers: {
@@ -11,7 +17,6 @@ function getFavoriteItems(id) {
     })
         .then((res) => res.json())
         .then((res) => {
-            console.log(res);
             fillItemsList(res);
         })
         .catch((err) => {
