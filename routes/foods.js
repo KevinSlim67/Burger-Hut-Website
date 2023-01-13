@@ -13,7 +13,32 @@ router.get('/', async (req, res) => {
     });
 });
 
-router.get('/:category/:userId', async (req, res) => {
+//Get food using its id
+router.get('/id/:id', async (req, res) => {
+    const id = req.params.id;
+    const sql = `SELECT * FROM Food WHERE id = ?`;
+    db.query(sql, [id], (error, results, fields) => {
+        if (error) return console.error(error.message);
+        if (true) {
+            //send image if it exists, send placeholder image if not
+            const imagePath = results[0].image;
+            try {
+                if (imagePath !== null || fs.existsSync(imagePath)) {
+                    results[0].image = fs.readFileSync(imagePath, 'base64');
+                } else {
+                    results[0].image = fs.readFileSync('assets/food/placeholder.png', 'base64');
+                }
+            } catch (err) {
+                console.error(err)
+            }
+            res.json(results[0]);
+        } else {
+            res.json([]);
+        }
+    });
+});
+
+router.get('/:category/id/:userId', async (req, res) => {
     const category = req.params.category;
     const userId = req.params.userId;
     const sql = `
@@ -33,7 +58,6 @@ router.get('/:category/:userId', async (req, res) => {
     `;
     db.query(sql, [userId ,category], (error, results, fields) => {
         if (error) return console.error(error.message);
-
         const foods = {};
         results.forEach(r => {
             if (!foods[r.id]) {
@@ -64,52 +88,56 @@ router.get('/:category/:userId', async (req, res) => {
 });
 
 //Get food based on letters that it contains
-router.get('/search/:input', async (req, res) => {
+router.get('/search/:input/id/:id', async (req, res) => {
     const input = req.params.input;
-    const sql = `SELECT * FROM Food WHERE name LIKE ?`;
-    db.query(sql, [`%${input}%`], (error, results, fields) => {
+    const id = req.params.id;
+    const sql = `
+        SELECT Food.*, ingredient, 
+        (CASE 
+            WHEN subquery.user_id IS NOT NULL THEN 'true'
+            ELSE 'false'
+        END) AS favorite
+        FROM Food
+        LEFT JOIN Food_Ingredient ON Food.id = Food_Ingredient.food_id
+        LEFT JOIN (
+            SELECT food_id, user_id 
+            FROM User_Favorite 
+            WHERE user_id = ?
+        ) subquery ON Food.id = subquery.food_id
+        WHERE name LIKE ?
+    `;
+    
+    db.query(sql, [id, `%${input}%`], (error, results, fields) => {
         if (error) return console.error(error.message);
+        const foods = {};
         results.forEach(r => {
-            //send image if it exists, send placeholder image if not
-            const imagePath = r.image;
-            try {
-                if (imagePath !== null || fs.existsSync(imagePath)) {
-                    r.image = fs.readFileSync(imagePath, 'base64');
-                } else {
-                    r.image = fs.readFileSync('assets/food/placeholder.png', 'base64');
+            if (!foods[r.id]) {
+                foods[r.id] = {
+                    ingredients: []
                 }
-            } catch (err) {
-                console.error(err)
+                for (let key in r) {
+                    if (key !== "ingredient") {
+                        foods[r.id][key] = r[key];
+                    }
+                }
+                //send image if it exists, send placeholder image if not
+                const imagePath = r.image;
+                try {
+                    if (imagePath !== null || fs.existsSync(imagePath)) {
+                        foods[r.id].image = fs.readFileSync(imagePath, 'base64');
+                    } else {
+                        foods[r.id].image = fs.readFileSync('assets/food/placeholder.png', 'base64');
+                    }
+                } catch (err) {
+                    console.error(err)
+                }
             }
+            if (r.ingredient) foods[r.id].ingredients.push(r.ingredient);
         });
-        res.json(results);
+        res.json(Object.values(foods));
     });
 });
 
-//Get food using its id
-router.get('/id/:id', async (req, res) => {
-    const id = req.params.id;
-    const sql = `SELECT * FROM Food WHERE id = ?`;
-    db.query(sql, [id], (error, results, fields) => {
-        if (error) return console.error(error.message);
-        if (results[0] !== undefined) {
-            //send image if it exists, send placeholder image if not
-            const imagePath = results[0].image;
-            try {
-                if (imagePath !== null || fs.existsSync(imagePath)) {
-                    results[0].image = fs.readFileSync(imagePath, 'base64');
-                } else {
-                    results[0].image = fs.readFileSync('assets/food/placeholder.png', 'base64');
-                }
-            } catch (err) {
-                console.error(err)
-            }
-            res.json(results[0]);
-        } else {
-            res.json([]);
-        }
-    });
-});
 
 //Get food ingredients
 router.get('/:id/ingredients', async (req, res) => {

@@ -22,7 +22,7 @@ function getCategoryItems(cat) {
     
     highlightSelectedItem(cat);
 
-    fetch(`${url}/foods/${cat}/${userId}`, {
+    fetch(`${url}/foods/${cat}/id/${userId}`, {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -60,7 +60,7 @@ function search() {
     const input = document.getElementById('search-bar').value;
     if (input === '') return;
 
-    fetch(`${url}/foods/search/${input}`, {
+    fetch(`${url}/foods/search/${input}/id/${userId}`, {
         method: "GET",
         headers: {
             Accept: "application/json",
