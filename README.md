@@ -1,4 +1,4 @@
-# Burger Hut E-commerce App
+# Burger Hut Fast Food App
 
 This project is an e-commerce web application for a fictional food company named "Burger Hut", designed for customers to easily order food online and also for delivery drivers to manage and fulfill deliveries.
 
