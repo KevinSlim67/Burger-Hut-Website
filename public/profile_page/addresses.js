@@ -163,6 +163,12 @@ function createAddressBox(address) {
 
 //Get all of the user's addresses
 function getAddresses() {
+    const list = document.getElementById('address-list');
+    list.innerHTML = '<spinner-component></spinner-component>';
+
+    const spinner = document.querySelector('spinner-component');
+    spinner.setDisplayBlock();
+
     let userId = sessionStorage.getItem('userId');
     return fetch(`${url}/addresses/${userId}`, {
         method: "GET",

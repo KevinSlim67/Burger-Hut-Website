@@ -150,6 +150,8 @@ h2 {
 
 /* Address List ---------------------------------------------------- */
 .cart .address-list {
+  position: relative;
+  min-height: 6rem;
   width: 100%;
   display: flex;
   justify-content: space-between;

@@ -19,7 +19,7 @@ function getCategoryItems(cat) {
 
     const spinner = document.querySelector('spinner-component');
     spinner.setDisplayBlock();
-    
+
     highlightSelectedItem(cat);
 
     fetch(`${url}/foods/${cat}/id/${userId}`, {
@@ -57,6 +57,12 @@ function highlightSelectedItem(cat) {
 
 //compares the string inputted in the search bar with all the food items in the DB, then returns the results
 function search() {
+    const list = document.getElementById('food-list');
+    list.innerHTML = '<spinner-component></spinner-component>';
+
+    const spinner = document.querySelector('spinner-component');
+    spinner.setDisplayBlock();
+
     const input = document.getElementById('search-bar').value;
     if (input === '') return;
 
@@ -74,23 +80,8 @@ function search() {
             }
             fillItemsList(res);
         })
-        .catch((err) => console.error(err));
-}
-
-function getFavorites() {
-    const userId = sessionStorage.getItem('userId');
-    fetch(`${url}/users-favorites/${userId}`, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        }
-    })
-        .then((res) => res.json())
-        .then((res) => {
-
-        })
-        .catch((err) => {
+        .catch((err) => { 
             console.error(err);
-        });
+            list.innerHTML = `<p>Sorry, there was a problem getting the items</p>`;
+         });
 }

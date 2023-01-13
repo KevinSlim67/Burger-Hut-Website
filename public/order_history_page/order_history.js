@@ -2,6 +2,12 @@ getOrders();
 
 //Get the 10 latest user's orders
 function getOrders() {
+    const list = document.getElementById('order-list');
+    list.innerHTML = '<spinner-component></spinner-component>';
+
+    const spinner = document.querySelector('spinner-component');
+    spinner.setDisplayBlock();
+
     fetch(`${url}/orders/${userId}`, {
         method: "GET",
         headers: {

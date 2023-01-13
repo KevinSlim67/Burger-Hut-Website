@@ -123,6 +123,12 @@ function removeAll(foodId) {
 }
 
 function getAddresses() {
+    const list = document.getElementById('address-list');
+    list.innerHTML = '<spinner-component></spinner-component>';
+
+    const spinner = document.querySelector('spinner-component');
+    spinner.setDisplayBlock();
+
     fetch(`${url}/addresses/${userId}`, {
         method: "GET",
         headers: {
@@ -151,7 +157,7 @@ function createAddressBox(address) {
 
 function fillAddressList(addresses) {
     const list = document.getElementById('address-list');
-    list.innerHtml = '';
+    list.innerHTML = '';
     addresses.forEach(e => {
         list.appendChild(createAddressBox(e));
     })
