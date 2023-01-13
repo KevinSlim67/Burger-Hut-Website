@@ -23,14 +23,19 @@ function fillItemsList(arr) {
 
 //create item card
 function createItem(item) {
-    const { id, name, price, image, category, ingredients } = item;
+    const { id, name, price, image, category, ingredients, favorite } = item;
+    let isFavorite = JSON.parse(favorite);
     const itemCard = document.createElement('div');
     itemCard.classList.add('food-card');
 
     itemCard.setAttribute('id', id);
     itemCard.setAttribute('category', category);
 
-    checkFavorite(itemCard);
+
+    if (isFavorite) {
+        itemCard.classList.add('favorite');
+    }
+    itemCard.setAttribute('favorite', isFavorite);
 
     itemCard.innerHTML =
         `
@@ -69,29 +74,6 @@ const getIngredients = async (id) => {
     } catch (err) {
         return [];
     }
-}
-
-function checkFavorite(itemCard) {
-    const id = itemCard.getAttribute('id');
-    const userId = sessionStorage.getItem('userId');
-    fetch(`${url}/users-favorites/${userId}/${id}`, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        }
-    })
-        .then((res) => res.json())
-        .then((res) => {
-            const status = JSON.parse(res);
-            itemCard.setAttribute('favorite', status);
-            if (status) {
-                itemCard.classList.add('favorite');
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-        });
 }
 
 function toggleFavorite(element) {

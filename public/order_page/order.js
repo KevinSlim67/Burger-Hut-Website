@@ -22,7 +22,7 @@ function getCategoryItems(cat) {
     
     highlightSelectedItem(cat);
 
-    fetch(`${url}/foods/${cat}`, {
+    fetch(`${url}/foods/${cat}/${userId}`, {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -75,4 +75,22 @@ function search() {
             fillItemsList(res);
         })
         .catch((err) => console.error(err));
+}
+
+function getFavorites() {
+    const userId = sessionStorage.getItem('userId');
+    fetch(`${url}/users-favorites/${userId}`, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        }
+    })
+        .then((res) => res.json())
+        .then((res) => {
+
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 }

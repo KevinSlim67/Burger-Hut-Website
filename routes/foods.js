@@ -13,10 +13,25 @@ router.get('/', async (req, res) => {
     });
 });
 
-router.get('/:category', async (req, res) => {
+router.get('/:category/:userId', async (req, res) => {
     const category = req.params.category;
-    const sql = `SELECT Food.*, ingredient FROM Food LEFT JOIN Food_Ingredient ON Food.id = Food_Ingredient.food_id WHERE category = ?`;
-    db.query(sql, [category], (error, results, fields) => {
+    const userId = req.params.userId;
+    const sql = `
+    SELECT Food.*, ingredient, 
+    (CASE 
+        WHEN subquery.user_id IS NOT NULL THEN 'true'
+        ELSE 'false'
+    END) AS favorite
+    FROM Food
+    LEFT JOIN Food_Ingredient ON Food.id = Food_Ingredient.food_id
+    LEFT JOIN (
+        SELECT food_id, user_id 
+        FROM User_Favorite 
+        WHERE user_id = ?
+    ) subquery ON Food.id = subquery.food_id
+    WHERE category = ?
+    `;
+    db.query(sql, [userId ,category], (error, results, fields) => {
         if (error) return console.error(error.message);
 
         const foods = {};
@@ -42,7 +57,7 @@ router.get('/:category', async (req, res) => {
                     console.error(err)
                 }
             }
-            if(r.ingredient) foods[r.id].ingredients.push(r.ingredient);
+            if (r.ingredient) foods[r.id].ingredients.push(r.ingredient);
         });
         res.json(Object.values(foods));
     });

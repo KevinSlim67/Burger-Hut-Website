@@ -7,14 +7,20 @@ const fs = require('fs');
 //Get one user's favorite food items
 router.get('/:userId', async (req, res) => {
     const userId = req.params.userId;
-    const sql = `SELECT * FROM User_Favorite LEFT JOIN Food ON User_Favorite.food_id = Food.id WHERE User_Favorite.user_id = ?;`;
+    const sql = `
+    SELECT Food.*, ingredient FROM User_Favorite 
+    JOIN Food ON User_Favorite.food_id = Food.id
+    LEFT JOIN Food_Ingredient ON Food.id = Food_Ingredient.food_id 
+    WHERE User_Favorite.user_id = ?;`;
+
     db.query(sql, [userId], (error, results, fields) => {
         if (error) return console.error(error.message);
         const foods = {};
         results.forEach(r => {
             if (!foods[r.id]) {
                 foods[r.id] = {
-                    ingredients: []
+                    ingredients: [],
+                    favorite: true
                 }
                 for (let key in r) {
                     if (key !== "ingredient") {
@@ -33,9 +39,9 @@ router.get('/:userId', async (req, res) => {
                     console.error(err)
                 }
             }
+            if (r.ingredient) foods[r.id].ingredients.push(r.ingredient);
         });
-        if(r.ingredient) foods[r.id].ingredients.push(r.ingredient);
-        res.json(results);
+        res.json(Object.values(foods));
     });
 });
 
