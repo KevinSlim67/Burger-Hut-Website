@@ -531,7 +531,7 @@
 }
 
 .food-details .details h3 {
-  font-size: 1.8em;
+  font-size: 1.6em;
   color: var(--primary-900);
   white-space: nowrap;
 }
@@ -613,6 +613,10 @@
   .food-details .cart img {
     width: 1.5rem;
     height: 1.5rem;
+  }
+
+  .food-details .details h3 {
+    font-size: 1.8em;
   }
 }
 
