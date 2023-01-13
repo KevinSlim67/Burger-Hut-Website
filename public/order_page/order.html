@@ -21,7 +21,7 @@
   <body>
     <div id="layout" class="layout">
       <a id="cart-btn" href="/cart" class="cart-btn primary-gradiant round">
-        <img src="./../assets/icons/cart.png" alt="" />
+        <img src="./../assets/icons/cart.png" alt="Cart Button" />
         <span id="cart-btn-amount"></span>
       </a>
 
@@ -41,14 +41,15 @@
             ./../assets/computer/burger.png 1330w
           "
           sizes="(max-width: 600px) 300px, 1330px"
-          alt="burger offer"
+          alt="Offer of the day"
           src="./../assets/computer/burger.png"
+          loading="lazy"
         />
       </section>
 
       <section class="selectors">
         <div class="search-bar" data-search>
-          <img src="./../assets/icons/search.png" alt="" />
+          <img src="./../assets/icons/search.png" alt="Search Bar" />
           <input id="search-bar" type="text" placeholder="Find your food" />
         </div>
         <button onclick="search()" class="search type1">Search</button>
