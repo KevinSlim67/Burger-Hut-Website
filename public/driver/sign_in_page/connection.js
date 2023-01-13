@@ -69,6 +69,9 @@ function handleAuthenticationStatus(data, rememberMe) {
         case "NOT FOUND":
             message.innerText = "Invalid Credentials!";
             message.style.color = errorColor;
+            popup.setAttribute("status", "error");
+            popup.setAttribute("text", `Invalid Credentials!`);
+            break;
             break;
     }
 }

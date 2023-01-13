@@ -118,13 +118,17 @@ function checkPassword(password, confirmation) {
 function handleRegistrationStatus(data) {
     switch (data.status) {
         case 'SUCCESS':
-            message.innerText = "Account created!";
+            message.innerText = "Account successfully created!";
             message.style.color = successColor;
-            //window.location.replace("./../home_page/home.html");
+            popup.setAttribute("status", "success");
+            popup.setAttribute("text", `Account successfully created!`);
+            window.location.replace("/sign-in");
             break;
         case "DUPLICATE":
             message.innerText = "Email already exists!";
             message.style.color = errorColor;
+            popup.setAttribute("status", "error");
+            popup.setAttribute("text", `Email already exists!`);
             break;
     }
 }
@@ -149,6 +153,8 @@ function handleAuthenticationStatus(data, rememberMe) {
         case "NOT FOUND":
             message.innerText = "Invalid Credentials!";
             message.style.color = errorColor;
+            popup.setAttribute("status", "error");
+            popup.setAttribute("text", `Invalid Credentials!`);
             break;
     }
 }

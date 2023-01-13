@@ -678,6 +678,7 @@ footer .copyright {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
+  font-size: 1rem;
   width: 95%;
   max-width: 650px;
   padding: 1em;
@@ -703,6 +704,12 @@ footer .copyright {
 
 .popup button:hover {
   color: white;
+}
+
+@media (max-width: 600px) {
+  .popup {
+    font-size: 1.3rem;
+  }
 }
 /* ------------------------------------------- */
 

@@ -11,7 +11,6 @@ app.use(express.urlencoded()) //decodes data sent from HTML form
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
-
 generateRoutes(app);
 
 //start the sever
