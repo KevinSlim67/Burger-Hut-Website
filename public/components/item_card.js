@@ -85,9 +85,10 @@ function toggleFavorite(element) {
         itemCard.classList.remove('favorite');
         itemCard.setAttribute('favorite', false);
     } else {
-        addToFavorite(itemCard);
-        itemCard.classList.add('favorite');
-        itemCard.setAttribute('favorite', true);
+        if (addToFavorite(itemCard)) {
+            itemCard.classList.add('favorite');
+            itemCard.setAttribute('favorite', true);
+        }
     }
 }
 
@@ -99,14 +100,14 @@ function removeFromFavorites(itemCard) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            userId: sessionStorage.getItem('userId'),
+            userId: userId,
             foodId: itemCard.id,
         })
     })
         .then((res) => res.json())
         .then((res) => {
             const url = window.location.href;
-            if (url.includes('favorite')) getFavoriteItems(sessionStorage.getItem('userId'));
+            if (url.includes('favorite')) itemCard.remove();
         })
         .catch((err) => {
             popup.setAttribute("status", "error");
@@ -116,6 +117,12 @@ function removeFromFavorites(itemCard) {
 }
 
 function addToFavorite(itemCard) {
+    if (!userId) {
+        popup.setAttribute("status", "error");
+        popup.setAttribute("text", `You need to be logged in to perform this action.`);
+        return false;
+    }
+
     fetch(`${url}/users-favorites/add`, {
         method: "POST",
         headers: {
@@ -123,16 +130,17 @@ function addToFavorite(itemCard) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            userId: sessionStorage.getItem('userId'),
+            userId: userId,
             foodId: itemCard.id,
         })
     })
-        .then((res) => res.json())
+        .then((res) => { return true; })
         .catch((err) => {
             popup.setAttribute("status", "error");
             popup.setAttribute("text", `Uh oh, we couldn't add the item from your favorites.`);
             console.error(err);
         });
+
 }
 
 
