@@ -145,7 +145,7 @@ function userSignedIn() {
     <ul id="dropdown-list" class="dropdown-list">
         <li><a href="/favorite">Favorites</a></li>
         <li><a href="/order-history">Order History</a></li>
-        <li><a href="/address-book#address-book">Address Book</a></li>
+        <li><a href="/profile#address-book">Address Book</a></li>
         <li><a href="/profile#account-details">Profile</a></li>
         <li><a href="/cart">Cart</a></li>
         <li><button class="sign-out">Sign Out</button></li>
